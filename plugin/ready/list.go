@@ -11,6 +11,12 @@ type list struct {
 	sync.RWMutex
 	rs    []Readiness
 	names []string
+
+	// keepReadiness indicates whether the readiness status of plugins should be retained
+	// after they have been confirmed as ready. When set to false, the plugin readiness
+	// status will be reset to nil to conserve resources, assuming ready plugins don't
+	// need continuous monitoring.
+	keepReadiness bool
 }
 
 // Reset resets l
@@ -41,6 +47,9 @@ func (l *list) Ready() (bool, string) {
 			continue
 		}
 		if r.Ready() {
+			if !l.keepReadiness {
+				l.rs[i] = nil
+			}
 			continue
 		}
 		ok = false
