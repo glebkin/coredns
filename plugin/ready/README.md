@@ -19,7 +19,7 @@ their readiness reported as the union of their respective readinesses.
 
 ~~~
 ready [ADDRESS] {
-    monitor [until-ready | continuously]
+    monitor until-ready|continuously
 }
 ~~~
 
